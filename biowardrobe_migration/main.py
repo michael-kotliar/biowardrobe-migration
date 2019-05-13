@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 import sys
 import logging
 from biowardrobe_migration.components.parser import parse_arguments

@@ -1,6 +1,8 @@
+#! /usr/bin/env python3
 import os
 import logging
 import argparse
+from biowardrobe_migration.utils.helpers import norm_path
 
 
 logger = logging.getLogger(__name__)
@@ -11,7 +13,7 @@ def normalize_args(args, skip_list=[]):
     normalized_args = {}
     for key,value in args.__dict__.items():
         if key not in skip_list:
-            normalized_args[key] = value if not value or os.path.isabs(value) else os.path.normpath(os.path.join(os.getcwd(), value))
+            normalized_args[key] = value if not value or os.path.isabs(value) else norm_path(os.path.join(os.getcwd(), value))
         else:
             normalized_args[key]=value
     return argparse.Namespace (**normalized_args)

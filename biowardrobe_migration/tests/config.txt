@@ -1,0 +1,14 @@
+#MySQL host to connect
+localhost
+
+#MySQL User
+readonly
+
+#MySQL password
+readonly
+
+#Wardrobe DB
+ems
+
+#MySQL port
+3306

@@ -23,4 +23,4 @@ def get_broken_outputs(outputs):
             correct.update({k: v}) if os.path.exists(v["location"]) else broken.update({k: v})
         except:
             correct.update({k: v})
-    return correct, broken
+    return broken, correct

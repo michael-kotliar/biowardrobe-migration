@@ -2,7 +2,7 @@
 import os
 import logging
 import argparse
-from biowardrobe_migration.utils.helpers import norm_path
+from biowardrobe_migration.utils.files import norm_path
 
 
 logger = logging.getLogger(__name__)

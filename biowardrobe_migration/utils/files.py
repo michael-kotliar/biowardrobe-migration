@@ -14,3 +14,13 @@ def open_file(filename):
             if line.strip():
                 lines.append(line.strip())
     return lines
+
+
+def get_broken_outputs(outputs):
+    correct, broken = {}, {}
+    for k, v in outputs.items():
+        try:
+            correct.update({k: v}) if os.path.exists(v["location"]) else broken.update({k: v})
+        except:
+            correct.update({k: v})
+    return correct, broken

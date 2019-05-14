@@ -51,7 +51,10 @@ setup(
     
     cmdclass={'egg_info': tagger},
     packages=find_packages(),
-    install_requires=[],
+    install_requires=[
+        'sqlparse',
+        'mysqlclient'
+    ],
     zip_safe=False,
     entry_points={
         'console_scripts': [

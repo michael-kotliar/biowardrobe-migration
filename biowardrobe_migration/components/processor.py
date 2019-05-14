@@ -41,7 +41,7 @@ def scan_outputs(connection):
 
             broken,_ = get_broken_outputs(experiment["outputs"])
             if broken:
-                collected_broken_outputs.update({experiment['exp_id']: {"data", "broken": broken} })
+                collected_broken_outputs.update({experiment['exp_id']: {"data": experiment, "broken": broken} })
 
         except Exception:
             logger.debug(f"Failed to updated params for {kwargs['uid']}")

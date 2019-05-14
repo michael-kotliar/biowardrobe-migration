@@ -18,7 +18,16 @@ def main(argsl=None):
     connection = Connect(args.config)
 
     collected_broken_outputs = scan_outputs(connection)
-    print(dumps(collected_broken_outputs, indent=4))
+
+    collected_statistics = {}
+    for experiment in collected_broken_outputs.values():
+        for k in experiment["broken"].keys():
+            if k in collected_statistics:
+                collected_statistics[ k ] += 1
+            else:
+                collected_statistics[ k ] = 0
+
+    print(dumps(collected_statistics, indent=4))
 
 
 if __name__ == "__main__":

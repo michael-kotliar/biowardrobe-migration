@@ -3,7 +3,7 @@ import MySQLdb
 import logging
 from sqlparse import split
 from contextlib import closing
-from biowardrobe_migration.utils.helpers import norm_path, open_file
+from biowardrobe_migration.utils.files import norm_path, open_file
 
 
 logger = logging.getLogger(__name__)

@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 import MySQLdb
 import logging
+from MySQLdb.cursors import DictCursor
 from sqlparse import split
 from contextlib import closing
 from biowardrobe_migration.utils.files import norm_path, open_file
@@ -21,7 +22,7 @@ class Connect:
             "passwd": self.config[2],
             "db": self.config[3],
             "port": int(self.config[4]),
-            "cursorclass": MySQLdb.cursors.DictCursor
+            "cursorclass": DictCursor
         }
         conn = MySQLdb.connect(**conn_config)
         return conn

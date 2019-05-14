@@ -53,7 +53,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         'sqlparse',
-        'mysqlclient'
+        'mysqlclient>=1.3.6,<1.4'
     ],
     zip_safe=False,
     entry_points={

@@ -25,7 +25,7 @@ def main(argsl=None):
             if k in collected_statistics:
                 collected_statistics[ k ] += 1
             else:
-                collected_statistics[ k ] = 0
+                collected_statistics[ k ] = 1
 
     print(dumps(collected_statistics, indent=4))
 

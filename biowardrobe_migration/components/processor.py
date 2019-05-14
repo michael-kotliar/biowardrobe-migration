@@ -28,7 +28,7 @@ def scan_outputs(connection):
     collected_broken_outputs = {}
     for experiment in connection.fetchall(sql_query):
         try:
-            
+            logger.debug(f"Processing {experiment['uid']}")
             experiment.update(settings)
             experiment.update({
                 "peak_type": "broad" if int(experiment['peak_type']) == 2 else "narrow",
@@ -41,8 +41,8 @@ def scan_outputs(connection):
 
             broken,_ = get_broken_outputs(experiment["outputs"])
             if broken:
-                collected_broken_outputs.update({experiment['exp_id']: {"data": experiment, "broken": broken} })
+                collected_broken_outputs.update({experiment['uid']: {"data": experiment, "broken": broken} })
 
         except Exception:
-            logger.debug(f"Failed to updated params for {experiment['uid']}")
+            logger.debug(f"Failed to process {experiment['uid']}")
     return collected_broken_outputs

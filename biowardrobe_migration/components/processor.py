@@ -9,7 +9,7 @@ from biowardrobe_migration.utils.templates import fill_template
 logger = logging.getLogger(__name__)
 
 
-def scan_outputs(connection):
+def get_broken_experiments(connection):
     settings = connection.get_settings_data()
     sql_query = """SELECT
                          l.uid                    as uid,
@@ -25,7 +25,7 @@ def scan_outputs(connection):
                          COALESCE(l.egroup_id,'')<>''  AND
                          COALESCE(l.name4browser,'')<>''"""
 
-    collected_broken_outputs = {}
+    broken_experiments = {}
     for experiment in connection.fetchall(sql_query):
         try:
             logger.debug(f"Processing {experiment['uid']}")
@@ -39,10 +39,23 @@ def scan_outputs(connection):
             for template in OUTPUT_TEMPLATES[experiment['exp_id']][experiment['peak_type']]:
                 experiment["outputs"].update(fill_template(template, experiment))
 
-            broken,_ = get_broken_outputs(experiment["outputs"])
-            if broken:
-                collected_broken_outputs.update({experiment['uid']: {"data": experiment, "broken": broken} })
-
+            broken_outputs,_ = get_broken_outputs(experiment["outputs"])
+            if broken_outputs:
+                broken_experiments.update({experiment['uid']: {"exp_type": experiment["exp_type"],
+                                                               "exp_id": experiment["exp_id"],
+                                                               "peak_type": experiment["peak_type"],
+                                                               "broken_outputs": broken_outputs}})
         except Exception:
             logger.debug(f"Failed to process {experiment['uid']}")
-    return collected_broken_outputs
+    return broken_experiments
+
+
+def get_statistics(broken_experiments, key="broken_outputs"):
+    statistics = {}
+    for e in broken_experiments.values():
+        for k in e[key].keys():
+            if k in statistics:
+                statistics[k] += 1
+            else:
+                statistics[k] = 1
+    return statistics

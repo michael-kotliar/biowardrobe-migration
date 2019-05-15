@@ -4,7 +4,7 @@ import logging
 from json import dumps
 from biowardrobe_migration.components.parser import parse_arguments
 from biowardrobe_migration.components.connection import Connect
-from biowardrobe_migration.components.processor import scan_outputs
+from biowardrobe_migration.components.processor import get_broken_experiments, get_statistics
 
 
 logger = logging.getLogger(__name__)
@@ -17,19 +17,8 @@ def main(argsl=None):
 
     connection = Connect(args.config)
 
-    collected_broken_outputs = scan_outputs(connection)
-
-    print(dumps(collected_broken_outputs, indent=4))
-
-    collected_statistics = {}
-    for experiment in collected_broken_outputs.values():
-        for k in experiment["broken"].keys():
-            if k in collected_statistics:
-                collected_statistics[k] += 1
-            else:
-                collected_statistics[k] = 1
-
-    print(dumps(collected_statistics, indent=4))
+    broken_experiments = get_broken_experiments(connection)
+    logger.info(dumps(get_statistics(broken_experiments), indent=4))
 
 
 if __name__ == "__main__":

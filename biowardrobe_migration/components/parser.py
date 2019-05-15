@@ -25,7 +25,7 @@ def get_parser():
     return parser
 
 
-def parse_arguments(argsl):
+def parse_arguments(argsl, skip_list=["debug", "quiet"]):
     """ Parses and normalizes arguments """
     args,_ = get_parser().parse_known_args(argsl)
-    return normalize_args(args)
+    return normalize_args(args, skip_list)

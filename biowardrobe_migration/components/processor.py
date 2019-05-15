@@ -6,9 +6,6 @@ from biowardrobe_migration.templates.outputs import OUTPUT_TEMPLATES
 from biowardrobe_migration.utils.templates import fill_template
 
 
-logger = logging.getLogger(__name__)
-
-
 def get_broken_experiments(connection):
     settings = connection.get_settings_data()
     sql_query = """SELECT
@@ -28,7 +25,7 @@ def get_broken_experiments(connection):
     broken_experiments = {}
     for experiment in connection.fetchall(sql_query):
         try:
-            logger.debug(f"Processing {experiment['uid']}")
+            logging.info(f"Processing {experiment['uid']}")
             experiment.update(settings)
             experiment.update({
                 "peak_type": "broad" if int(experiment['peak_type']) == 2 else "narrow",
@@ -46,7 +43,7 @@ def get_broken_experiments(connection):
                                                                "peak_type": experiment["peak_type"],
                                                                "broken_outputs": broken_outputs}})
         except Exception:
-            logger.debug(f"Failed to process {experiment['uid']}")
+            logging.info(f"Failed to process {experiment['uid']}")
     return broken_experiments
 
 

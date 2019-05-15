@@ -7,9 +7,6 @@ from contextlib import closing
 from biowardrobe_migration.utils.files import norm_path, open_file
 
 
-logger = logging.getLogger(__name__)
-
-
 class Connect:
 
     def __init__(self, config_file):
@@ -67,6 +64,6 @@ class Connect:
         return settings_data
 
     def apply_patch(self, filename):
-        logger.debug(f"Apply SQL patch: {filename}")
+        logging.info(f"Apply SQL patch: {filename}")
         with open(filename) as patch_stream:
             self.execute(patch_stream.read())

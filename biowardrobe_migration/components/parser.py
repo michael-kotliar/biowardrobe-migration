@@ -1,11 +1,7 @@
 #! /usr/bin/env python3
 import os
-import logging
 import argparse
 from biowardrobe_migration.utils.files import norm_path
-
-
-logger = logging.getLogger(__name__)
 
 
 def normalize_args(args, skip_list=[]):

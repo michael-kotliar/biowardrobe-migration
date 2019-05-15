@@ -7,9 +7,6 @@ from biowardrobe_migration.components.connection import Connect
 from biowardrobe_migration.components.processor import get_broken_experiments, get_statistics
 
 
-logger = logging.getLogger(__name__)
-
-
 def main(argsl=None):
     if argsl is None:
         argsl = sys.argv[1:]
@@ -18,7 +15,7 @@ def main(argsl=None):
     connection = Connect(args.config)
 
     broken_experiments = get_broken_experiments(connection)
-    logger.info(dumps(get_statistics(broken_experiments), indent=4))
+    logging.info(dumps(get_statistics(broken_experiments), indent=4))
 
 
 if __name__ == "__main__":

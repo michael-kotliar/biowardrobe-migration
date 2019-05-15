@@ -19,6 +19,9 @@ def get_parser():
     """ Return parser """
     parser = argparse.ArgumentParser(description='BioWardrobe Migration', add_help=True)
     parser.add_argument("-c", "--config", help="Path to the BioWardrobe config file", default="/etc/wardrobe/wardrobe")
+    logging_level = parser.add_mutually_exclusive_group()
+    logging_level.add_argument("-d", "--debug",    help="Output debug information", action="store_true")
+    logging_level.add_argument("-q", "--quiet",    help="Suppress all outputs except errors", action="store_true")
     return parser
 
 

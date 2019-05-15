@@ -64,6 +64,6 @@ class Connect:
         return settings_data
 
     def apply_patch(self, filename):
-        logging.info(f"Apply SQL patch: {filename}")
+        logging.debug(f"Apply SQL patch: {filename}")
         with open(filename) as patch_stream:
             self.execute(patch_stream.read())

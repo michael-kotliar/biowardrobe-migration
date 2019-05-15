@@ -25,7 +25,7 @@ def get_broken_experiments(connection):
     broken_experiments = {}
     for experiment in connection.fetchall(sql_query):
         try:
-            logging.info(f"Processing {experiment['uid']}")
+            logging.debug(f"Processing {experiment['uid']}")
             experiment.update(settings)
             experiment.update({
                 "peak_type": "broad" if int(experiment['peak_type']) == 2 else "narrow",

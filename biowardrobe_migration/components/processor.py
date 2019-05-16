@@ -52,6 +52,8 @@ def get_broken_inputs(connection):
     settings = connection.get_settings_data()
     sql_query = """SELECT
                          l.uid                    as uid,
+                         l.id                     as id,
+                         l.url                    as url,
                          e.id                     as exp_id,
                          e.etype                  as exp_type
                    FROM  labdata l
@@ -71,7 +73,9 @@ def get_broken_inputs(connection):
 
             broken_inputs,_ = get_broken_locations(experiment["inputs"])
             if broken_inputs:
-                broken_experiments.update({experiment['uid']: {"exp_type": experiment["exp_type"],
+                broken_experiments.update({experiment['uid']: {"id": experiment["id"],
+                                                               "url": experiment["url"],
+                                                               "exp_type": experiment["exp_type"],
                                                                "exp_id": experiment["exp_id"],
                                                                "broken_inputs": broken_inputs}})
         except Exception:

@@ -16,7 +16,7 @@ def open_file(filename):
     return lines
 
 
-def get_broken_outputs(outputs):
+def get_broken_locations(outputs):
     broken, correct = {}, {}
     for k, v in outputs.items():
         try:

@@ -1,12 +1,12 @@
 #! /usr/bin/env python3
 import logging
 from json import loads
-from biowardrobe_migration.utils.files import norm_path, get_broken_outputs
+from biowardrobe_migration.utils.files import norm_path, get_broken_locations
 from biowardrobe_migration.templates.outputs import OUTPUT_TEMPLATES, INPUT_TEMPLATES
 from biowardrobe_migration.utils.templates import fill_template
 
 
-def get_broken_experiments(connection):
+def get_broken_outputs(connection):
     settings = connection.get_settings_data()
     sql_query = """SELECT
                          l.uid                    as uid,
@@ -36,7 +36,7 @@ def get_broken_experiments(connection):
             for template in OUTPUT_TEMPLATES[experiment['exp_id']][experiment['peak_type']]:
                 experiment["outputs"].update(fill_template(template, experiment))
 
-            broken_outputs,_ = get_broken_outputs(experiment["outputs"])
+            broken_outputs,_ = get_broken_locations(experiment["outputs"])
             if broken_outputs:
                 broken_experiments.update({experiment['uid']: {"exp_type": experiment["exp_type"],
                                                                "exp_id": experiment["exp_id"],
@@ -69,7 +69,7 @@ def get_broken_inputs(connection):
             experiment.update(settings)
             experiment["inputs"] = fill_template(INPUT_TEMPLATES[experiment['exp_id']], experiment)
 
-            broken_inputs,_ = get_broken_outputs(experiment["outputs"])
+            broken_inputs,_ = get_broken_locations(experiment["inputs"])
             if broken_inputs:
                 broken_experiments.update({experiment['uid']: {"exp_type": experiment["exp_type"],
                                                                "exp_id": experiment["exp_id"],

@@ -246,6 +246,11 @@ MODEL_R = """
 |  8 | DNA-Seq Trim Galore             | trim-chipseq-se.cwl              |
 |  9 | DNA-Seq pair Trim Galore        | trim-chipseq-pe.cwl              |
 | 11 | RNA-Seq dUTP pair Mitochondrial | rnaseq-pe-dutp-mitochondrial.cwl |
+| 16 | RNA-Seq Trim Galore             | trim-rnaseq-se.cwl               |
+| 17 | RNA-Seq pair Trim Galore        | trim-rnaseq-pe.cwl               |
+| 18 | RNA-Seq dUTP Trim Galore        | trim-rnaseq-se-dutp.cwl          |
+| 19 | RNA-Seq dUTP pair Trim Galore   | trim-rnaseq-pe-dutp.cwl          |
+| 28 | CLIP-Seq                        | clipseq-se.cwl                   |
 +----+---------------------------------+----------------------------------+
 """
 
@@ -285,4 +290,45 @@ OUTPUT_TEMPLATES = {
     11: {
         "narrow": [COMMON, RNA,       BAM_MITOCH,         BIGWIG_DUTP,     PE,                                  ADD_FIELDS]
     }
+}
+
+
+FASTQ_SE = """
+  {{
+    "fastq_file": {{
+      "location": "{raw_data}/{uid}/{uid}.fastq.bz2",
+      "class": "File"
+    }}
+  }}
+"""
+
+FASTQ_PE = """
+  {{
+    "fastq_file_upstream": {{
+      "location": "{raw_data}/{uid}/{uid}.fastq.bz2",
+      "class": "File"
+    }},
+    "fastq_file_downstream": {{
+      "location": "{raw_data}/{uid}/{uid}_2.fastq.bz2",
+      "class": "File"
+    }}
+  }}
+"""
+
+INPUT_TEMPLATES = {
+  1: FASTQ_SE,    # | DNA-Seq                         | chipseq-se.cwl                   |
+  2: FASTQ_PE,    # | DNA-Seq pair                    | chipseq-pe.cwl                   |
+  3: FASTQ_SE,    # | RNA-Seq                         | rnaseq-se.cwl                    |
+  4: FASTQ_PE,    # | RNA-Seq pair                    | rnaseq-pe.cwl                    |
+  5: FASTQ_SE,    # | RNA-Seq dUTP                    | rnaseq-se-dutp.cwl               |
+  6: FASTQ_PE,    # | RNA-Seq dUTP pair               | rnaseq-pe-dutp.cwl               |
+  7: FASTQ_SE,    # | RNA-Seq dUTP Mitochondrial      | rnaseq-se-dutp-mitochondrial.cwl |
+  8: FASTQ_SE,    # | DNA-Seq Trim Galore             | trim-chipseq-se.cwl              |
+  9: FASTQ_PE,    # | DNA-Seq pair Trim Galore        | trim-chipseq-pe.cwl              |
+  11: FASTQ_PE,   # | RNA-Seq dUTP pair Mitochondrial | rnaseq-pe-dutp-mitochondrial.cwl |
+  16: FASTQ_SE,   # | RNA-Seq Trim Galore             | trim-rnaseq-se.cwl               |
+  17: FASTQ_PE,   # | RNA-Seq pair Trim Galore        | trim-rnaseq-pe.cwl               |
+  18: FASTQ_SE,   # | RNA-Seq dUTP Trim Galore        | trim-rnaseq-se-dutp.cwl          |
+  19: FASTQ_PE,   # | RNA-Seq dUTP pair Trim Galore   | trim-rnaseq-pe-dutp.cwl          |
+  28: FASTQ_SE    # | CLIP-Seq                        | clipseq-se.cwl                   |
 }

@@ -2,7 +2,7 @@
 import logging
 from json import loads
 from biowardrobe_migration.utils.files import norm_path, get_broken_outputs
-from biowardrobe_migration.templates.outputs import OUTPUT_TEMPLATES
+from biowardrobe_migration.templates.outputs import OUTPUT_TEMPLATES, INPUT_TEMPLATES
 from biowardrobe_migration.utils.templates import fill_template
 
 
@@ -45,6 +45,39 @@ def get_broken_experiments(connection):
         except Exception:
             logging.info(f"Failed to process {experiment['uid']}")
     return broken_experiments
+
+
+
+def get_broken_inputs(connection):
+    settings = connection.get_settings_data()
+    sql_query = """SELECT
+                         l.uid                    as uid,
+                         e.id                     as exp_id,
+                         e.etype                  as exp_type
+                   FROM  labdata l
+                   INNER JOIN (experimenttype e) ON (e.id=l.experimenttype_id)
+                   LEFT JOIN (antibody a) ON (l.antibody_id=a.id)
+                   WHERE (l.deleted=0)                 AND
+                         (l.libstatus=12)              AND
+                         COALESCE(l.egroup_id,'')<>''  AND
+                         COALESCE(l.name4browser,'')<>''"""
+
+    broken_experiments = {}
+    for experiment in connection.fetchall(sql_query):
+        try:
+            logging.debug(f"Processing {experiment['uid']}")
+            experiment.update(settings)
+            experiment["inputs"] = fill_template(INPUT_TEMPLATES[experiment['exp_id']], experiment)
+
+            broken_inputs,_ = get_broken_outputs(experiment["outputs"])
+            if broken_inputs:
+                broken_experiments.update({experiment['uid']: {"exp_type": experiment["exp_type"],
+                                                               "exp_id": experiment["exp_id"],
+                                                               "broken_inputs": broken_inputs}})
+        except Exception:
+            logging.info(f"Failed to process {experiment['uid']}")
+    return broken_experiments
+
 
 
 def get_statistics(broken_experiments, key="broken_outputs"):

@@ -5,7 +5,7 @@ from json import dumps
 from biowardrobe_migration.components.parser import parse_arguments
 from biowardrobe_migration.components.logger import reset_root_logger
 from biowardrobe_migration.components.connection import Connect
-from biowardrobe_migration.components.processor import get_broken_experiments, get_statistics
+from biowardrobe_migration.components.processor import get_broken_experiments, get_statistics, get_broken_inputs
 
 
 def main(argsl=None):
@@ -22,8 +22,13 @@ def main(argsl=None):
         reset_root_logger(logging.INFO)
 
     connection = Connect(args.config)
-    broken_experiments = get_broken_experiments(connection)
-    logging.info(dumps(get_statistics(broken_experiments), indent=4))
+
+    # broken_experiments = get_broken_experiments(connection)
+    # logging.info(dumps(get_statistics(broken_experiments), indent=4))
+
+
+    broken_experiments_inputs = get_broken_inputs(connection)
+    logging.info(dumps(get_statistics(broken_experiments_inputs), indent=4))
 
 
 if __name__ == "__main__":
